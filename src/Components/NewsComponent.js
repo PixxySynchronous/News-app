@@ -1,3 +1,4 @@
+// src/NewsComponent.js
 import React, { useState, useEffect } from 'react';
 import Newitem from './Newitem';
 import Spinner from './Spinner';
@@ -9,16 +10,15 @@ const NewsComponent = (props) => {
     const [page, setPage] = useState(1);
     const [totalResults, setTotalResults] = useState(0);
 
-    const { country, category, pageSize, api } = props;
+    const { country, category, pageSize } = props;
 
     const updateNews = async () => {
         setLoading(true);
-        const url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${api}&page=${page}&pageSize=${pageSize}`;
-        console.log("Fetching from URL:", url);
-        const data = await fetch(url, { mode: 'cors' });
+        const url = `/api/news?country=${country}&category=${category}&page=${page}&pageSize=${pageSize}`;
+        const data = await fetch(url);
         const parsedData = await data.json();
-        setArticles(parsedData.articles);
-        setTotalResults(parsedData.totalResults);
+        setArticles(parsedData.articles || []);
+        setTotalResults(parsedData.totalResults || 0);
         setLoading(false);
     };
 
@@ -29,13 +29,11 @@ const NewsComponent = (props) => {
 
     const fetchMoreData = async () => {
         const nextPage = page + 1;
-        const url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${api}&page=${nextPage}&pageSize=${pageSize}`;
-        console.log("Fetching more from URL:", url);
-        const data = await fetch(url, { mode: 'cors' });
+        const url = `/api/news?country=${country}&category=${category}&page=${nextPage}&pageSize=${pageSize}`;
+        const data = await fetch(url);
         const parsedData = await data.json();
-
-        setArticles((prevArticles) => prevArticles.concat(parsedData.articles));
-        setTotalResults(parsedData.totalResults);
+        setArticles((prev) => prev.concat(parsedData.articles || []));
+        setTotalResults(parsedData.totalResults || 0);
         setPage(nextPage);
     };
 

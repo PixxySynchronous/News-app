@@ -7,7 +7,7 @@ const Newsitem = (props) => {
     return (
         <div>
             <div className="card">
-                <img src={img} className="card-img-top" alt="..." />
+                <img src={img} className="card-img-top  h-42 w-full object-cover" alt="..." />
                 <div className="card-body">
                     <h6> <span className="badge bg-secondary">{newschannel}</span></h6>
 

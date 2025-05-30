@@ -1,9 +1,11 @@
+// api/news.js
 const fetch = require('node-fetch');
 
 module.exports = async (req, res) => {
   console.log('API Request received with query:', req.query);
   const { country = 'us', category = 'general', page = 1, pageSize = 10 } = req.query;
   const apiKey = process.env.NEWS_API;
+
   console.log('API key present?', apiKey ? 'Yes' : 'No');
 
   if (!apiKey) {

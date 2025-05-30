@@ -14,7 +14,8 @@ const NewsComponent = (props) => {
     const updateNews = async () => {
         setLoading(true);
         const url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${api}&page=${page}&pageSize=${pageSize}`;
-        const data = await fetch(url);
+        console.log("Fetching from URL:", url);
+        const data = await fetch(url, { mode: 'cors' });
         const parsedData = await data.json();
         setArticles(parsedData.articles);
         setTotalResults(parsedData.totalResults);
@@ -29,13 +30,15 @@ const NewsComponent = (props) => {
     const fetchMoreData = async () => {
         const nextPage = page + 1;
         const url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${api}&page=${nextPage}&pageSize=${pageSize}`;
-        const data = await fetch(url);
+        console.log("Fetching more from URL:", url);
+        const data = await fetch(url, { mode: 'cors' });
         const parsedData = await data.json();
 
         setArticles((prevArticles) => prevArticles.concat(parsedData.articles));
         setTotalResults(parsedData.totalResults);
         setPage(nextPage);
     };
+
     const capitalizeFirstLetter = (word) => {
         if (!word) return '';
         return word.charAt(0).toUpperCase() + word.slice(1);
@@ -53,8 +56,6 @@ const NewsComponent = (props) => {
                 dataLength={articles.length}
                 next={fetchMoreData}
                 hasMore={articles.length < totalResults}
-
-
             >
                 <div className='container my-3'>
                     <div className='row'>
